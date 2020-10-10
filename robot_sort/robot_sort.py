@@ -3,11 +3,11 @@ class SortingRobot:
         """
         SortingRobot takes a list and sorts it.
         """
-        self._list = l          # The list the robot is tasked with sorting
-        self._item = None       # The item the robot is holding
-        self._position = 0      # The list position the robot is at
-        self._light = "OFF"     # The state of the robot's light
-        self._time = 0          # A time counter (stretch)
+        self._list = l  # The list the robot is tasked with sorting
+        self._item = None  # The item the robot is holding
+        self._position = 0  # The list position the robot is at
+        self._light = "OFF"  # The state of the robot's light
+        self._time = 0  # A time counter (stretch)
 
     def can_move_right(self):
         """
@@ -49,6 +49,20 @@ class SortingRobot:
         else:
             return False
 
+    def move_left_all(self):
+        """
+        move all the way left
+        """
+        while self.can_move_left():
+            self.move_left()
+
+    def move_right_all(self):
+        """
+        move all the way right
+        """
+        while self.can_move_right():
+            self.move_right()
+
     def swap_item(self):
         """
         The robot swaps its currently held item with the list item in front
@@ -81,30 +95,70 @@ class SortingRobot:
         Turn on the robot's light
         """
         self._light = "ON"
+
     def set_light_off(self):
         """
         Turn off the robot's light
         """
         self._light = "OFF"
+
     def light_is_on(self):
         """
         Returns True if the robot's light is on and False otherwise.
         """
         return self._light == "ON"
 
+    def at_the_end(self):
+        while self.light_is_on():
+            # if we make it to the end we should have highest value held
+            if self.compare_item() == 1:
+                self.swap_item()
+                self.set_light_off()
+            # if we had some case where it wasnt highest we move left
+            elif self.can_move_left():
+                self.move_left()
+            else:
+                self.set_light_off()
+                return
+
+        while self.light_is_on() is False:
+            # reset back to start of list to try agin
+            if self.can_move_left():
+                self.move_left()
+            # if list is sorted just return
+            else:
+                return self.sort()
+
     def sort(self):
         """
         Sort the robot's list.
+        light on means its in process of sorting
+        start at the left of the list
         """
-        # Fill this out
-        pass
+        #! Fill this out
+        # bubble sort??
+        self.set_light_on()
+        # while its in progress
+        while self.light_is_on():
+            # get item at the start
+            if self.compare_item() == None:
+                self.swap_item()
+            # swap if the held item is less
+            if self.compare_item() == -1:
+                self.swap_item()
+                self.move_right()
+            else:
+                self.move_right()
+            # robot is at the end
+            if self.can_move_right() is False:
+                self.at_the_end()
 
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
 
-    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
+    l = [5, 4, 3, 2, 1]
 
     robot = SortingRobot(l)
 
