@@ -4,9 +4,9 @@
 
 a) this is O(n), the body is constant and is repeated n times
 
-b) this i O(n^2), recognized by nested loops, not as good as it can be and may work for smaller sample sizes but should be improved if possible
+b) this is O(n log n), j is doubling on line 20, so it makes the inner loop O(log n), and the outer is O(n)
 
-c) this is O(2^n), it is similar to the fibonacci recursive algorithm, where answers to lesser value inputs are required first, as they are part of the final answer
+c) this is O(n), it is a recursive function that calls itself n times based on input
 
 ## Exercise II
 
